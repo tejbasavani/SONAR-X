@@ -4,6 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>Adaptive Sonar Transmitter Payload — SIH26058</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8C%8A%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -307,7 +308,7 @@
     <div class="demo-caption">
       <p>Illustrative concept geometry, rotating for reference — swap in your own CAD render or walkthrough clip whenever it's ready.</p>
       <div class="upload-actions" style="margin-top:0;">
-        <label class="btn" for="demoUpload">Upload render</label>
+        <button type="button" class="btn" data-target="demoUpload">Upload render</button>
         <input type="file" id="demoUpload" accept="image/*,video/*">
         <button class="btn ghost" id="demoReset">Show 3D concept</button>
       </div>
@@ -335,7 +336,7 @@
           </div>
         </div>
         <div class="upload-actions">
-          <label class="btn" for="schematicUpload">Upload schematic</label>
+          <button type="button" class="btn" data-target="schematicUpload">Upload schematic</button>
           <input type="file" id="schematicUpload" accept="image/*">
           <button class="btn ghost" data-clear="schematic">Remove</button>
         </div>
@@ -353,7 +354,7 @@
           </div>
         </div>
         <div class="upload-actions">
-          <label class="btn" for="pcbUpload">Upload layout</label>
+          <button type="button" class="btn" data-target="pcbUpload">Upload layout</button>
           <input type="file" id="pcbUpload" accept="image/*">
           <button class="btn ghost" data-clear="pcb">Remove</button>
         </div>
@@ -375,28 +376,28 @@
         <div class="upload-frame" id="proto1Frame" style="aspect-ratio:4/3; margin-top:0;">
           <div class="upload-empty"><div class="icon">▢</div>Photo 1</div>
         </div>
-        <div class="upload-actions"><label class="btn" for="proto1Upload">Add</label><input type="file" id="proto1Upload" accept="image/*"></div>
+        <div class="upload-actions"><button type="button" class="btn" data-target="proto1Upload">Add</button><input type="file" id="proto1Upload" accept="image/*"></div>
       </div>
       <div class="upload-panel bracket" style="position:relative; padding:14px;">
         <span class="bk"></span>
         <div class="upload-frame" id="proto2Frame" style="aspect-ratio:4/3; margin-top:0;">
           <div class="upload-empty"><div class="icon">▢</div>Photo 2</div>
         </div>
-        <div class="upload-actions"><label class="btn" for="proto2Upload">Add</label><input type="file" id="proto2Upload" accept="image/*"></div>
+        <div class="upload-actions"><button type="button" class="btn" data-target="proto2Upload">Add</button><input type="file" id="proto2Upload" accept="image/*"></div>
       </div>
       <div class="upload-panel bracket" style="position:relative; padding:14px;">
         <span class="bk"></span>
         <div class="upload-frame" id="proto3Frame" style="aspect-ratio:4/3; margin-top:0;">
           <div class="upload-empty"><div class="icon">▢</div>Photo 3</div>
         </div>
-        <div class="upload-actions"><label class="btn" for="proto3Upload">Add</label><input type="file" id="proto3Upload" accept="image/*"></div>
+        <div class="upload-actions"><button type="button" class="btn" data-target="proto3Upload">Add</button><input type="file" id="proto3Upload" accept="image/*"></div>
       </div>
       <div class="upload-panel bracket" style="position:relative; padding:14px;">
         <span class="bk"></span>
         <div class="upload-frame" id="proto4Frame" style="aspect-ratio:4/3; margin-top:0;">
           <div class="upload-empty"><div class="icon">▢</div>Photo 4</div>
         </div>
-        <div class="upload-actions"><label class="btn" for="proto4Upload">Add</label><input type="file" id="proto4Upload" accept="image/*"></div>
+        <div class="upload-actions"><button type="button" class="btn" data-target="proto4Upload">Add</button><input type="file" id="proto4Upload" accept="image/*"></div>
       </div>
     </div>
   </div>
@@ -480,6 +481,15 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
 (function () {
+  // ---------- Upload trigger buttons (robust across embedded/iframe contexts) ----------
+  document.querySelectorAll('button[data-target]').forEach(function (btn) {
+    btn.addEventListener('click', function (e) {
+      e.preventDefault();
+      var target = document.getElementById(btn.getAttribute('data-target'));
+      if (target) target.click();
+    });
+  });
+
   // ---------- 3D concept pod ----------
   var canvas = document.getElementById('podCanvas');
   var frame = document.getElementById('demoFrame');
