@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Adaptive Sonar Transmitter Payload — SIH26058</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8C%8A%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #071620;
+    --panel: #0D2233;
+    --panel-2: #102A3E;
+    --line: rgba(255,255,255,0.10);
+    --line-strong: rgba(255,255,255,0.20);
+    --teal: #22C4B4;
+    --teal-dim: #12786F;
+    --gold: #E8C468;
+    --text: #E7F1F3;
+    --text-dim: #92ABB6;
+    --text-faint: #5B7280;
+    --danger: #E0745A;
+    --sans: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) { color-scheme: dark; }
+  }
+  :root[data-theme="dark"] { color-scheme: dark; }
+  html { scroll-behavior: smooth; scroll-padding-top: calc(72px + env(safe-area-inset-top, 0px)); }
+  * { box-sizing: inherit; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    line-height: 1.55;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+    background-size: 42px 42px;
+    background-position: center top;
+  }
+  img { max-width: 100%; display: block; }
+  a { color: inherit; }
+  .wrap { max-width: 1160px; margin: 0 auto; padding: 0 24px; }
+  h1, h2, h3 { font-family: var(--sans); font-weight: 600; margin: 0; letter-spacing: -0.01em; }
+  p { margin: 0; color: var(--text-dim); max-width: 62ch; }
+  .mono { font-family: var(--mono); }
+
+  /* ---------- Nav ---------- */
+  header.nav {
+    position: sticky; top: 0; z-index: 50;
+    padding-top: env(safe-area-inset-top, 0px);
+    background: rgba(7,22,32,0.82);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 62px; }
+  .brand { font-family: var(--mono); font-size: 13px; color: var(--text); display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+  .brand-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--teal); box-shadow: 0 0 8px var(--teal); flex: none; }
+  nav.links { display: flex; gap: 22px; overflow-x: auto; -ms-overflow-style: none; scrollbar-width: none; }
+  nav.links::-webkit-scrollbar { display: none; }
+  nav.links a { font-size: 13.5px; color: var(--text-dim); text-decoration: none; white-space: nowrap; padding: 4px 0; border-bottom: 1px solid transparent; transition: color .15s, border-color .15s; }
+  nav.links a:hover { color: var(--text); border-color: var(--teal); }
+
+  /* ---------- Corner-bracket panel ---------- */
+  .bracket { position: relative; }
+  .bracket::before, .bracket::after,
+  .bracket .bk::before, .bracket .bk::after { content: ""; position: absolute; width: 16px; height: 16px; border-color: var(--teal-dim); }
+  .bracket::before { top: -1px; left: -1px; border-top: 2px solid var(--teal); border-left: 2px solid var(--teal); }
+  .bracket::after { top: -1px; right: -1px; border-top: 2px solid var(--teal); border-right: 2px solid var(--teal); }
+  .bracket .bk::before { bottom: -1px; left: -1px; border-bottom: 2px solid var(--teal); border-left: 2px solid var(--teal); }
+  .bracket .bk::after { bottom: -1px; right: -1px; border-bottom: 2px solid var(--teal); border-right: 2px solid var(--teal); }
+
+  /* ---------- Hero ---------- */
+  .hero { padding: 84px 0 56px; border-bottom: 1px solid var(--line); }
+  .hero-grid { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 56px; align-items: center; }
+  .kicker { font-family: var(--mono); font-size: 12.5px; color: var(--teal); margin-bottom: 18px; }
+  .hero h1 { font-size: clamp(30px, 4.4vw, 46px); line-height: 1.15; color: var(--text); max-width: 16ch; }
+  .hero p.lede { margin-top: 18px; font-size: 16px; max-width: 46ch; }
+  .badges { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 30px; }
+  .badge { font-family: var(--mono); font-size: 12px; color: var(--text-dim); border: 1px solid var(--line-strong); padding: 7px 12px; border-radius: 4px; }
+
+  .sonar-frame { position: relative; aspect-ratio: 1/1; border-radius: 50%; background: radial-gradient(circle at 50% 50%, #0B2836 0%, #071620 72%); border: 1px solid var(--line-strong); overflow: hidden; }
+  .sonar-frame .ring { position: absolute; top: 50%; left: 50%; border: 1px solid rgba(34,196,180,0.35); border-radius: 50%; transform: translate(-50%,-50%); animation: ping 3.2s cubic-bezier(.2,.6,.2,1) infinite; }
+  .sonar-frame .ring:nth-child(2) { animation-delay: 1.07s; }
+  .sonar-frame .ring:nth-child(3) { animation-delay: 2.14s; }
+  @keyframes ping { 0% { width: 6%; height: 6%; opacity: .9; } 100% { width: 100%; height: 100%; opacity: 0; } }
+  .sonar-frame .sweep { position: absolute; top: 50%; left: 50%; width: 50%; height: 2px; transform-origin: left center; background: linear-gradient(90deg, rgba(34,196,180,0.9), transparent); animation: sweep 3.2s linear infinite; }
+  @keyframes sweep { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+  .sonar-frame .center-dot { position: absolute; top: 50%; left: 50%; width: 8px; height: 8px; margin: -4px; border-radius: 50%; background: var(--teal); box-shadow: 0 0 12px var(--teal); }
+  .sonar-readout { position: absolute; bottom: 14px; left: 14px; right: 14px; display: flex; justify-content: space-between; font-family: var(--mono); font-size: 10.5px; color: var(--text-faint); }
+
+  /* ---------- Section shell ---------- */
+  section { padding: 72px 0; border-bottom: 1px solid var(--line); }
+  .section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 24px; margin-bottom: 40px; flex-wrap: wrap; }
+  .section-head h2 { font-size: 26px; }
+  .section-head .idx { font-family: var(--mono); font-size: 12.5px; color: var(--text-faint); }
+
+  /* ---------- Overview ---------- */
+  .overview-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 48px; }
+  .overview-grid p { max-width: 58ch; font-size: 15px; }
+  .callout-list { display: flex; flex-direction: column; gap: 18px; }
+  .callout { border-top: 1px solid var(--line); padding-top: 14px; }
+  .callout h3 { font-size: 14.5px; color: var(--text); margin-bottom: 6px; }
+  .callout p { font-size: 13.5px; }
+
+  /* ---------- Architecture ---------- */
+  .stages { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); }
+  .stage { background: var(--panel); padding: 22px 18px; display: flex; flex-direction: column; gap: 10px; min-height: 210px; }
+  .stage .num { font-family: var(--mono); font-size: 12px; color: var(--teal); }
+  .stage h3 { font-size: 15px; color: var(--text); }
+  .stage p { font-size: 12.5px; }
+  .chip-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; }
+  .chip { font-family: var(--mono); font-size: 10.5px; color: var(--text-dim); border: 1px solid var(--line-strong); padding: 3px 7px; border-radius: 3px; }
+  @media (max-width: 860px) { .stages { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 520px) { .stages { grid-template-columns: 1fr; } }
+
+  /* ---------- Upload panels ---------- */
+  .upload-panel { background: var(--panel); border: 1px solid var(--line); padding: 22px; }
+  .upload-panel .bk { position: absolute; inset: 0; pointer-events: none; }
+  .upload-frame { position: relative; aspect-ratio: 16/10; background: #081B28; border: 1px dashed var(--line-strong); display: flex; align-items: center; justify-content: center; overflow: hidden; margin-top: 16px; }
+  .upload-frame img, .upload-frame video { width: 100%; height: 100%; object-fit: cover; }
+  .upload-empty { text-align: center; color: var(--text-faint); font-size: 12.5px; padding: 20px; }
+  .upload-empty .icon { font-size: 22px; margin-bottom: 8px; opacity: .6; }
+  .upload-actions { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
+  button.btn { font-family: var(--mono); font-size: 12px; background: transparent; color: var(--teal); border: 1px solid var(--teal-dim); padding: 8px 14px; border-radius: 4px; cursor: pointer; transition: background .15s, color .15s; }
+  button.btn:hover { background: var(--teal); color: #04211D; }
+  button.btn.ghost { color: var(--text-dim); border-color: var(--line-strong); }
+  button.btn.ghost:hover { background: var(--line-strong); color: var(--text); }
+  input[type="file"] { display: none; }
+  .panel-title { display: flex; align-items: center; justify-content: space-between; }
+  .panel-title h3 { font-size: 15px; }
+  .panel-title span.mono { font-size: 11px; color: var(--text-faint); }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .gallery-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 8px; }
+  @media (max-width: 900px) { .two-col, .gallery-grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 560px) { .gallery-grid { grid-template-columns: 1fr; } }
+
+  /* ---------- 3D demo ---------- */
+  .demo-frame { position: relative; aspect-ratio: 16/9; background: radial-gradient(circle at 30% 20%, #0F2C3E, #071620); border: 1px solid var(--line-strong); overflow: hidden; }
+  .demo-frame canvas { width: 100%; height: 100%; display: block; }
+  .demo-caption { display: flex; justify-content: space-between; align-items: center; margin-top: 14px; flex-wrap: wrap; gap: 10px; }
+  .demo-caption p { font-size: 12.5px; }
+
+  /* ---------- Feasibility gauges ---------- */
+  .gauges { display: flex; flex-direction: column; gap: 24px; }
+  .gauge-row { display: grid; grid-template-columns: 140px 1fr 90px; gap: 18px; align-items: center; }
+  .gauge-row .label { font-size: 14px; color: var(--text); }
+  .gauge-track { height: 6px; background: var(--panel-2); border-radius: 3px; overflow: hidden; }
+  .gauge-fill { height: 100%; background: linear-gradient(90deg, var(--teal-dim), var(--teal)); }
+  .gauge-row .value { font-family: var(--mono); font-size: 12px; color: var(--text-dim); text-align: right; }
+  .gauge-note { grid-column: 1 / -1; font-size: 12.5px; margin-top: -10px; }
+  @media (max-width: 640px) { .gauge-row { grid-template-columns: 1fr; gap: 6px; } .gauge-row .value { text-align: left; } }
+
+  /* ---------- Impact ---------- */
+  .impact-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); }
+  .impact-col { background: var(--panel); padding: 24px; }
+  .impact-col h3 { font-size: 14px; color: var(--gold); margin-bottom: 14px; font-family: var(--mono); }
+  .impact-col ul { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 10px; }
+  .impact-col li { font-size: 13px; color: var(--text-dim); }
+  @media (max-width: 800px) { .impact-grid { grid-template-columns: 1fr; } }
+
+  footer { padding: 40px 0 calc(40px + env(safe-area-inset-bottom, 0px)); }
+  footer p { font-size: 12.5px; color: var(--text-faint); }
+
+  @media (max-width: 860px) {
+    .hero-grid { grid-template-columns: 1fr; }
+    .sonar-frame { max-width: 320px; margin: 0 auto; }
+    .overview-grid { grid-template-columns: 1fr; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ring, .sweep { animation: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-inner">
+    <div class="brand"><span class="brand-dot"></span>SONAR-TX / SIH26058</div>
+    <nav class="links">
+      <a href="#overview">Overview</a>
+      <a href="#architecture">Architecture</a>
+      <a href="#demo">3D demo</a>
+      <a href="#schematic">Schematic &amp; PCB</a>
+      <a href="#prototype">Prototype log</a>
+      <a href="#feasibility">Feasibility</a>
+      <a href="#impact">Impact</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="kicker">SIH26058 · Ministry of Earth Sciences / NIOT</div>
+      <h1>A transmitter that reads the water before it speaks</h1>
+      <p class="lede">A low-power, real-time software-defined sonar transmitter payload for AUVs — reshaping its own chirp, sweep, and pulse-coded output as depth, turbidity, and range change beneath it.</p>
+      <div class="badges">
+        <span class="badge">STM32G4</span>
+        <span class="badge">100–500 kHz</span>
+        <span class="badge">LFM / Sweep / PCP</span>
+        <span class="badge">DMA + hardware timers</span>
+      </div>
+    </div>
+    <div class="sonar-frame bracket">
+      <span class="bk"></span>
+      <div class="ring"></div>
+      <div class="ring"></div>
+      <div class="ring"></div>
+      <div class="sweep"></div>
+      <div class="center-dot"></div>
+      <div class="sonar-readout">
+        <span>DEPTH 0400m</span>
+        <span>BRG 214°</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="overview">
+  <div class="wrap overview-grid">
+    <div>
+      <div class="section-head" style="margin-bottom:22px;">
+        <h2>Overview</h2>
+        <span class="idx mono">01</span>
+      </div>
+      <p>Traditional sonar transmitters fire a fixed waveform regardless of conditions — a high-frequency chirp scatters instantly in murky water, and a low-frequency one blurs the image it returns. Underwater conditions change constantly with depth, turbidity, temperature, and salinity, so a fixed transmitter is always a compromise somewhere along an AUV's route.</p>
+      <p style="margin-top:16px;">This payload behaves instead like a software-defined radio for sound: it senses the environment, decides on the right waveform for it, and synthesizes that waveform in real time — without ever stalling the processor or draining the battery computing trigonometry on the fly.</p>
+    </div>
+    <div class="callout-list">
+      <div class="callout">
+        <h3>Senses first</h3>
+        <p>Reads depth, turbidity, and range through the ADC before every adaptation cycle.</p>
+      </div>
+      <div class="callout">
+        <h3>Adapts on the fly</h3>
+        <p>Switches between LFM chirps, geometric sweeps, and phase-coded pulses without pausing transmission.</p>
+      </div>
+      <div class="callout">
+        <h3>Never stalls the CPU</h3>
+        <p>DMA and hardware timers carry every sample — the processor is free the moment a pulse starts streaming.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="architecture">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>System architecture</h2>
+      <span class="idx mono">02 — four-stage real-time pipeline</span>
+    </div>
+    <div class="stages">
+      <div class="stage">
+        <span class="num">01</span>
+        <h3>Sensing</h3>
+        <p>Scenario input via potentiometers or sensors → ADC → DMA → RAM buffer, with zero CPU intervention per sample.</p>
+        <div class="chip-row"><span class="chip">ADC</span><span class="chip">DMA</span></div>
+      </div>
+      <div class="stage">
+        <span class="num">02</span>
+        <h3>Adaptive control</h3>
+        <p>Filtering and adaptation logic map sensed conditions through a precomputed LUT into three parameters: bandwidth/Fc, pulse duration, amplitude.</p>
+        <div class="chip-row"><span class="chip">LUT</span><span class="chip">slow path</span></div>
+      </div>
+      <div class="stage">
+        <span class="num">03</span>
+        <h3>Waveform synthesis</h3>
+        <p>A modulation selector routes into a shared DDS engine and phase accumulator, then a phase→amplitude LUT and digital windowing shape the pulse edges.</p>
+        <div class="chip-row"><span class="chip">LFM</span><span class="chip">Sweep</span><span class="chip">PCP</span><span class="chip">Hamming/Hann</span></div>
+      </div>
+      <div class="stage">
+        <span class="num">04</span>
+        <h3>Output &amp; validation</h3>
+        <p>Double-buffered samples stream via timer + DMA to the DAC, through an analog filter and amplifier, out to the transducer — then to scope/FFT for validation.</p>
+        <div class="chip-row"><span class="chip">Double buffer</span><span class="chip">FFT check</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="demo">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>3D concept demo</h2>
+      <span class="idx mono">03</span>
+    </div>
+    <div class="demo-frame bracket" id="demoFrame">
+      <span class="bk"></span>
+      <canvas id="podCanvas"></canvas>
+      <div class="upload-frame" id="demoUploadFrame" style="display:none; position:absolute; inset:0; margin:0;">
+        <div class="upload-empty" id="demoEmptyState">
+          <div class="icon">▢</div>
+          Your render will appear here
+        </div>
+      </div>
+    </div>
+    <div class="demo-caption">
+      <p>Illustrative concept geometry, rotating for reference — swap in your own CAD render or walkthrough clip whenever it's ready.</p>
+      <div class="upload-actions" style="margin-top:0;">
+        <label class="btn" for="demoUpload">Upload render</label>
+        <input type="file" id="demoUpload" accept="image/*,video/*">
+        <button class="btn ghost" id="demoReset">Show 3D concept</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="schematic">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Schematic &amp; PCB</h2>
+      <span class="idx mono">04</span>
+    </div>
+    <div class="two-col">
+      <div class="upload-panel bracket" style="position:relative;">
+        <span class="bk"></span>
+        <div class="panel-title">
+          <h3>Circuit schematic</h3>
+          <span class="mono">SVG / PNG</span>
+        </div>
+        <div class="upload-frame" id="schematicFrame">
+          <div class="upload-empty" id="schematicEmpty">
+            <div class="icon">▢</div>
+            Add your circuit schematic — the block diagram above stands in until then
+          </div>
+        </div>
+        <div class="upload-actions">
+          <label class="btn" for="schematicUpload">Upload schematic</label>
+          <input type="file" id="schematicUpload" accept="image/*">
+          <button class="btn ghost" data-clear="schematic">Remove</button>
+        </div>
+      </div>
+      <div class="upload-panel bracket" style="position:relative;">
+        <span class="bk"></span>
+        <div class="panel-title">
+          <h3>PCB / breadboard layout</h3>
+          <span class="mono">optional</span>
+        </div>
+        <div class="upload-frame" id="pcbFrame">
+          <div class="upload-empty" id="pcbEmpty">
+            <div class="icon">▢</div>
+            Breadboard is fully compliant per the problem statement — add a photo when ready
+          </div>
+        </div>
+        <div class="upload-actions">
+          <label class="btn" for="pcbUpload">Upload layout</label>
+          <input type="file" id="pcbUpload" accept="image/*">
+          <button class="btn ghost" data-clear="pcb">Remove</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="prototype">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Prototype log</h2>
+      <span class="idx mono">05</span>
+    </div>
+    <p style="margin-bottom:8px;">Bench photos as each stage comes online — waveform on the scope first, then sensing, then the full closed loop.</p>
+    <div class="gallery-grid">
+      <div class="upload-panel bracket" style="position:relative; padding:14px;">
+        <span class="bk"></span>
+        <div class="upload-frame" id="proto1Frame" style="aspect-ratio:4/3; margin-top:0;">
+          <div class="upload-empty"><div class="icon">▢</div>Photo 1</div>
+        </div>
+        <div class="upload-actions"><label class="btn" for="proto1Upload">Add</label><input type="file" id="proto1Upload" accept="image/*"></div>
+      </div>
+      <div class="upload-panel bracket" style="position:relative; padding:14px;">
+        <span class="bk"></span>
+        <div class="upload-frame" id="proto2Frame" style="aspect-ratio:4/3; margin-top:0;">
+          <div class="upload-empty"><div class="icon">▢</div>Photo 2</div>
+        </div>
+        <div class="upload-actions"><label class="btn" for="proto2Upload">Add</label><input type="file" id="proto2Upload" accept="image/*"></div>
+      </div>
+      <div class="upload-panel bracket" style="position:relative; padding:14px;">
+        <span class="bk"></span>
+        <div class="upload-frame" id="proto3Frame" style="aspect-ratio:4/3; margin-top:0;">
+          <div class="upload-empty"><div class="icon">▢</div>Photo 3</div>
+        </div>
+        <div class="upload-actions"><label class="btn" for="proto3Upload">Add</label><input type="file" id="proto3Upload" accept="image/*"></div>
+      </div>
+      <div class="upload-panel bracket" style="position:relative; padding:14px;">
+        <span class="bk"></span>
+        <div class="upload-frame" id="proto4Frame" style="aspect-ratio:4/3; margin-top:0;">
+          <div class="upload-empty"><div class="icon">▢</div>Photo 4</div>
+        </div>
+        <div class="upload-actions"><label class="btn" for="proto4Upload">Add</label><input type="file" id="proto4Upload" accept="image/*"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="feasibility">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Feasibility</h2>
+      <span class="idx mono">06</span>
+    </div>
+    <div class="gauges">
+      <div class="gauge-row">
+        <div class="label">Technical</div>
+        <div class="gauge-track"><div class="gauge-fill" style="width:90%"></div></div>
+        <div class="value">High</div>
+        <p class="gauge-note">Mature, well-documented platform — no unproven theory required.</p>
+      </div>
+      <div class="gauge-row">
+        <div class="label">Time</div>
+        <div class="gauge-track"><div class="gauge-fill" style="width:55%"></div></div>
+        <div class="value">Tight</div>
+        <p class="gauge-note">Reduced-scope prototype keeps the Sep 30 deadline realistic.</p>
+      </div>
+      <div class="gauge-row">
+        <div class="label">Cost</div>
+        <div class="gauge-track"><div class="gauge-fill" style="width:88%"></div></div>
+        <div class="value">High</div>
+        <p class="gauge-note">Low-cost, widely available components throughout.</p>
+      </div>
+      <div class="gauge-row">
+        <div class="label">Team</div>
+        <div class="gauge-track"><div class="gauge-fill" style="width:65%"></div></div>
+        <div class="value">Moderate</div>
+        <p class="gauge-note">Strong embedded background; DSP gap sidestepped with LUT-based design.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="impact" style="border-bottom:none;">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Impact &amp; benefits</h2>
+      <span class="idx mono">07</span>
+    </div>
+    <div class="impact-grid">
+      <div class="impact-col">
+        <h3>Social</h3>
+        <ul>
+          <li>Safer, more effective underwater survey and hazard mapping</li>
+          <li>Builds indigenous embedded / sonar engineering talent</li>
+        </ul>
+      </div>
+      <div class="impact-col">
+        <h3>Economic</h3>
+        <ul>
+          <li>Reduces reliance on costly imported SDR sonar systems</li>
+          <li>Longer battery life per mission lowers operating cost</li>
+          <li>Potential path to transfer into India's AUV industry</li>
+        </ul>
+      </div>
+      <div class="impact-col">
+        <h3>Environmental</h3>
+        <ul>
+          <li>Condition-adapted mapping supports conservation decisions</li>
+          <li>Lower energy and material footprint per mission</li>
+          <li>Useful across clear reef to turbid estuarine conditions</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>Prepared for Smart India Hackathon 2026 — Problem Statement SIH26058, Ministry of Earth Sciences / National Institute of Ocean Technology. Team background in VLSI and embedded systems design.</p>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function () {
+  // ---------- 3D concept pod ----------
+  var canvas = document.getElementById('podCanvas');
+  var frame = document.getElementById('demoFrame');
+  var renderer, scene, camera, podGroup;
+
+  function initPod() {
+    renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
+    scene = new THREE.Scene();
+    camera = new THREE.PerspectiveCamera(38, 1, 0.1, 100);
+    camera.position.set(0, 0.4, 5.2);
+
+    var amb = new THREE.AmbientLight(0x224455, 1.1);
+    scene.add(amb);
+    var dir = new THREE.DirectionalLight(0x6fe9dc, 1.4);
+    dir.position.set(3, 4, 5);
+    scene.add(dir);
+    var dir2 = new THREE.DirectionalLight(0x2a5a6e, 0.6);
+    dir2.position.set(-4, -2, -3);
+    scene.add(dir2);
+
+    podGroup = new THREE.Group();
+
+    var bodyMat = new THREE.MeshStandardMaterial({ color: 0x123543, metalness: 0.35, roughness: 0.55 });
+    var body = new THREE.Mesh(new THREE.CylinderGeometry(0.75, 0.75, 3.0, 32), bodyMat);
+    body.rotation.z = Math.PI / 2;
+    podGroup.add(body);
+
+    var noseMat = new THREE.MeshStandardMaterial({ color: 0x1c4a58, metalness: 0.3, roughness: 0.5 });
+    var nose = new THREE.Mesh(new THREE.SphereGeometry(0.75, 32, 32, 0, Math.PI * 2, 0, Math.PI / 2), noseMat);
+    nose.rotation.z = -Math.PI / 2;
+    nose.position.x = 1.5;
+    podGroup.add(nose);
+
+    var tailMat = new THREE.MeshStandardMaterial({ color: 0x1c4a58, metalness: 0.3, roughness: 0.5 });
+    var tail = new THREE.Mesh(new THREE.SphereGeometry(0.75, 32, 32, 0, Math.PI * 2, 0, Math.PI / 2), tailMat);
+    tail.rotation.z = Math.PI / 2;
+    tail.position.x = -1.5;
+    podGroup.add(tail);
+
+    var windowMat = new THREE.MeshStandardMaterial({ color: 0x22c4b4, emissive: 0x0e5c53, metalness: 0.1, roughness: 0.3 });
+    var win = new THREE.Mesh(new THREE.CylinderGeometry(0.55, 0.55, 0.08, 32), windowMat);
+    win.rotation.z = Math.PI / 2;
+    win.position.x = 1.55;
+    podGroup.add(win);
+
+    // edge highlight for a blueprint feel
+    var edges = new THREE.EdgesGeometry(new THREE.CylinderGeometry(0.75, 0.75, 3.0, 16));
+    var edgeLines = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: 0x2fd6c4, transparent: true, opacity: 0.35 }));
+    edgeLines.rotation.z = Math.PI / 2;
+    podGroup.add(edgeLines);
+
+    var finMat = new THREE.MeshStandardMaterial({ color: 0x0e2b36, metalness: 0.2, roughness: 0.7 });
+    for (var i = 0; i < 3; i++) {
+      var fin = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.55, 0.05), finMat);
+      fin.position.set(-1.55, 0, 0);
+      fin.rotation.x = (i * Math.PI * 2) / 3;
+      fin.translateY(0.55);
+      podGroup.add(fin);
+    }
+
+    podGroup.rotation.y = 0.4;
+    scene.add(podGroup);
+    resizePod();
+    animatePod();
+    window.addEventListener('resize', resizePod);
+  }
+
+  function resizePod() {
+    if (!renderer || !frame) return;
+    var w = frame.clientWidth, h = frame.clientHeight;
+    renderer.setSize(w, h, false);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+  }
+
+  function animatePod() {
+    requestAnimationFrame(animatePod);
+    if (podGroup) podGroup.rotation.y += 0.006;
+    if (renderer) renderer.render(scene, camera);
+  }
+
+  if (window.THREE) initPod();
+
+  // ---------- Generic upload-to-localStorage helper ----------
+  function wireUpload(inputId, frameId, storageKey, emptyHTML) {
+    var input = document.getElementById(inputId);
+    var frameEl = document.getElementById(frameId);
+    if (!input || !frameEl) return;
+
+    function render(dataUrl) {
+      if (!dataUrl) {
+        frameEl.innerHTML = emptyHTML;
+        return;
+      }
+      var isVideo = dataUrl.indexOf('data:video') === 0;
+      frameEl.innerHTML = isVideo
+        ? '<video src="' + dataUrl + '" autoplay muted loop playsinline></video>'
+        : '<img src="' + dataUrl + '" alt="">';
+    }
+
+    try {
+      var saved = localStorage.getItem(storageKey);
+      if (saved) render(saved);
+    } catch (e) {}
+
+    input.addEventListener('change', function (e) {
+      var file = e.target.files && e.target.files[0];
+      if (!file) return;
+      var reader = new FileReader();
+      reader.onload = function () {
+        var dataUrl = reader.result;
+        render(dataUrl);
+        try { localStorage.setItem(storageKey, dataUrl); } catch (err) {
+          frameEl.querySelector('.upload-empty') || null;
+        }
+      };
+      reader.readAsDataURL(file);
+    });
+
+    frameEl.addEventListener('clear', function () {
+      try { localStorage.removeItem(storageKey); } catch (e) {}
+      render(null);
+    });
+  }
+
+  var schematicEmptyHTML = document.getElementById('schematicFrame').innerHTML;
+  var pcbEmptyHTML = document.getElementById('pcbFrame').innerHTML;
+  wireUpload('schematicUpload', 'schematicFrame', 'sonarSite_schematic', schematicEmptyHTML);
+  wireUpload('pcbUpload', 'pcbFrame', 'sonarSite_pcb', pcbEmptyHTML);
+
+  document.querySelectorAll('[data-clear]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var key = btn.getAttribute('data-clear');
+      var frameId = key === 'schematic' ? 'schematicFrame' : 'pcbFrame';
+      document.getElementById(frameId).dispatchEvent(new Event('clear'));
+    });
+  });
+
+  ['proto1', 'proto2', 'proto3', 'proto4'].forEach(function (id) {
+    var emptyHTML = document.getElementById(id + 'Frame').innerHTML;
+    wireUpload(id + 'Upload', id + 'Frame', 'sonarSite_' + id, emptyHTML);
+  });
+
+  // ---------- 3D demo upload swap ----------
+  var demoUploadInput = document.getElementById('demoUpload');
+  var demoUploadFrame = document.getElementById('demoUploadFrame');
+  var demoReset = document.getElementById('demoReset');
+  var DEMO_KEY = 'sonarSite_demoRender';
+
+  function showUploadedDemo(dataUrl) {
+    canvas.style.display = 'none';
+    demoUploadFrame.style.display = 'flex';
+    var isVideo = dataUrl.indexOf('data:video') === 0;
+    demoUploadFrame.innerHTML = isVideo
+      ? '<video src="' + dataUrl + '" autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;"></video>'
+      : '<img src="' + dataUrl + '" alt="" style="width:100%;height:100%;object-fit:cover;">';
+  }
+
+  function showPod() {
+    canvas.style.display = 'block';
+    demoUploadFrame.style.display = 'none';
+  }
+
+  try {
+    var savedDemo = localStorage.getItem(DEMO_KEY);
+    if (savedDemo) showUploadedDemo(savedDemo);
+  } catch (e) {}
+
+  demoUploadInput.addEventListener('change', function (e) {
+    var file = e.target.files && e.target.files[0];
+    if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function () {
+      showUploadedDemo(reader.result);
+      try { localStorage.setItem(DEMO_KEY, reader.result); } catch (err) {}
+    };
+    reader.readAsDataURL(file);
+  });
+
+  demoReset.addEventListener('click', function () {
+    try { localStorage.removeItem(DEMO_KEY); } catch (e) {}
+    showPod();
+  });
+})();
+</script>
+</body>
+</html>
