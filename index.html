@@ -122,31 +122,27 @@
   @media (max-width: 860px) { .stages { grid-template-columns: 1fr 1fr; } }
   @media (max-width: 520px) { .stages { grid-template-columns: 1fr; } }
 
-  /* ---------- Upload panels ---------- */
-  .upload-panel { background: var(--panel); border: 1px solid var(--line); padding: 22px; }
+  /* ---------- Panels ---------- */
+  .upload-panel { background: var(--panel); border: 1px solid var(--line); padding: 22px; display: flex; flex-direction: column;}
   .upload-panel .bk { position: absolute; inset: 0; pointer-events: none; }
-  .upload-frame { position: relative; aspect-ratio: 16/10; background: #081B28; border: 1px dashed var(--line-strong); display: flex; align-items: center; justify-content: center; overflow: hidden; margin-top: 16px; }
-  .upload-frame img, .upload-frame video { width: 100%; height: 100%; object-fit: cover; }
-  .upload-empty { text-align: center; color: var(--text-faint); font-size: 12.5px; padding: 20px; }
-  .upload-empty .icon { font-size: 22px; margin-bottom: 8px; opacity: .6; }
-  .upload-actions { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
-  button.btn { font-family: var(--mono); font-size: 12px; background: transparent; color: var(--teal); border: 1px solid var(--teal-dim); padding: 8px 14px; border-radius: 4px; cursor: pointer; transition: background .15s, color .15s; }
-  button.btn:hover { background: var(--teal); color: #04211D; }
-  button.btn.ghost { color: var(--text-dim); border-color: var(--line-strong); }
-  button.btn.ghost:hover { background: var(--line-strong); color: var(--text); }
-  input[type="file"] { display: none; }
+  .upload-frame { position: relative; background: #081B28; border: 1px solid var(--line-strong); display: flex; align-items: center; justify-content: center; overflow: hidden; margin-top: 16px; border-radius: 4px; flex-grow: 1;}
+  .upload-frame img, .upload-frame video { width: 100%; height: auto; object-fit: contain; display: block; }
   .panel-title { display: flex; align-items: center; justify-content: space-between; }
   .panel-title h3 { font-size: 15px; }
   .panel-title span.mono { font-size: 11px; color: var(--text-faint); }
 
-  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-  .gallery-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 8px; }
-  @media (max-width: 900px) { .two-col, .gallery-grid { grid-template-columns: 1fr 1fr; } }
-  @media (max-width: 560px) { .gallery-grid { grid-template-columns: 1fr; } }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: stretch;}
+  @media (max-width: 900px) { .two-col { grid-template-columns: 1fr; } }
+
+  /* ---------- Lists for Panels ---------- */
+  .feature-list { list-style: none; margin-top: 20px; padding: 0; }
+  .feature-list li { font-size: 13.5px; color: var(--text-dim); margin-bottom: 12px; position: relative; padding-left: 20px; }
+  .feature-list li::before { content: "›"; position: absolute; left: 0; top: 0; color: var(--teal); font-weight: bold; font-family: var(--mono);}
+  .feature-list strong { color: var(--text); }
 
   /* ---------- 3D demo ---------- */
-  .demo-frame { position: relative; aspect-ratio: 16/9; background: radial-gradient(circle at 30% 20%, #0F2C3E, #071620); border: 1px solid var(--line-strong); overflow: hidden; }
-  .demo-frame canvas { width: 100%; height: 100%; display: block; }
+  .demo-frame { position: relative; aspect-ratio: 16/9; background: radial-gradient(circle at 30% 20%, #0F2C3E, #071620); border: 1px solid var(--line-strong); overflow: hidden; margin-top: 16px; border-radius: 4px; }
+  .demo-frame video { width: 100%; height: 100%; display: block; object-fit: cover; }
   .demo-caption { display: flex; justify-content: space-between; align-items: center; margin-top: 14px; flex-wrap: wrap; gap: 10px; }
   .demo-caption p { font-size: 12.5px; }
 
@@ -180,63 +176,7 @@
   @media (prefers-reduced-motion: reduce) {
     .ring, .sweep { animation: none !important; }
   }
-
-  /* ---------- Media viewer ---------- */
-  .media-openable{cursor:zoom-in;position:relative}
-  .media-openable::after{content:"OPEN";position:absolute;right:10px;bottom:10px;font:10px var(--mono);letter-spacing:.08em;color:#d9fffa;background:rgba(7,22,32,.82);border:1px solid rgba(34,196,180,.45);padding:5px 7px;border-radius:3px;opacity:0;transform:translateY(4px);transition:opacity .18s,transform .18s}
-  .media-openable:hover::after{opacity:1;transform:none}
-  .media-viewer{position:fixed;inset:0;z-index:200;display:none;align-items:center;justify-content:center;padding:28px;background:rgba(2,10,15,.88);backdrop-filter:blur(10px)}
-  .media-viewer.open{display:flex;animation:viewerIn .2s ease both}
-  .viewer-card{width:min(1100px,96vw);height:min(88vh,850px);display:flex;flex-direction:column;background:#081B28;border:1px solid var(--line-strong);box-shadow:0 30px 90px rgba(0,0,0,.5);position:relative}
-  .viewer-toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 14px;border-bottom:1px solid var(--line);font:11px var(--mono);color:var(--text-dim)}
-  .viewer-close{font:18px var(--sans);line-height:1;background:transparent;border:1px solid var(--line-strong);color:var(--text);width:34px;height:30px;cursor:pointer;border-radius:3px}
-  .viewer-close:hover{border-color:var(--teal);color:var(--teal)}
-  .viewer-stage{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;padding:18px;overflow:auto;background:radial-gradient(circle at center,#0e2d3b,#06151e)}
-  .viewer-stage img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;cursor:zoom-in}
-  .viewer-stage video{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;background:#000}
-  .viewer-hint{padding:8px 14px;border-top:1px solid var(--line);font:10.5px var(--mono);color:var(--text-faint)}
-  .video-panel{background:var(--panel);border:1px solid var(--line);padding:22px;margin-top:24px}
-  .video-drop{margin-top:16px;border:1px dashed var(--line-strong);min-height:170px;display:flex;align-items:center;justify-content:center;background:#081B28}
-  .video-drop video{max-width:100%;max-height:320px;width:auto;height:auto}
-  @keyframes viewerIn{from{opacity:0}to{opacity:1}}
-  @media(max-width:600px){.media-viewer{padding:8px}.viewer-card{height:92vh;width:100%}.viewer-stage{padding:8px}}
 </style>
-
-<style>
-/* Public GitHub Pages mode: no upload controls are needed. */
-.video-section{background:#eef8f6}
-.video-panel{display:grid;grid-template-columns:1.35fr .65fr;gap:24px;align-items:stretch}
-.video-frame{position:relative;min-height:360px;background:#07151b;border-radius:18px;overflow:hidden;border:1px solid #cfe1e2;box-shadow:0 18px 40px rgba(16,33,43,.10)}
-.video-frame video{display:block;width:100%;height:100%;min-height:360px;object-fit:contain;background:#07151b}
-.video-empty{position:absolute;inset:0;display:grid;place-content:center;text-align:center;color:#b7cbd0;gap:8px;pointer-events:none;background:radial-gradient(circle at center,rgba(55,183,173,.08),transparent 50%)}
-.video-empty strong{font-family:"Space Grotesk",sans-serif;color:#e9f5f5;font-size:20px}
-.video-empty span{font-size:13px}
-.video-empty code{color:#73d6ca}
-.video-info{padding:28px;background:white;border:1px solid #d8e8e7;border-radius:18px}
-.video-badge{display:inline-block;padding:6px 10px;border-radius:100px;background:#dff4f0;color:#08716e;font-size:11px;font-weight:700;letter-spacing:.08em}
-.video-info h3{font-family:"Space Grotesk",sans-serif;font-size:25px;margin:18px 0 8px}
-.video-info p{color:#667780}
-
-.zoomable-image{cursor:zoom-in}
-.no-scroll{overflow:hidden}
-.media-lightbox{position:fixed;inset:0;z-index:1000;display:none;background:rgba(4,12,16,.94);backdrop-filter:blur(8px)}
-.media-lightbox.open{display:block}
-.lightbox-stage{position:absolute;inset:70px 25px 25px;display:grid;place-items:center;overflow:hidden}
-#lightboxImage{max-width:92vw;max-height:88vh;object-fit:contain;transform-origin:center center;cursor:grab;user-select:none;transition:transform .16s ease}
-#lightboxImage.dragging{cursor:grabbing;transition:none}
-.lightbox-close{position:absolute;right:22px;top:14px;width:44px;height:44px;border:1px solid rgba(255,255,255,.25);border-radius:50%;background:rgba(255,255,255,.08);color:#fff;font-size:30px;line-height:1;cursor:pointer;z-index:3}
-.zoom-controls{position:absolute;left:22px;top:17px;display:flex;align-items:center;gap:7px;z-index:3}
-.zoom-controls button,.zoom-controls span{height:38px;min-width:38px;border:1px solid rgba(255,255,255,.20);border-radius:8px;background:rgba(255,255,255,.08);color:#fff;padding:0 11px;display:grid;place-items:center;font-weight:600}
-.zoom-controls button{cursor:pointer}
-.zoom-controls button:hover{background:rgba(55,183,173,.25);border-color:rgba(55,183,173,.6)}
-@media(max-width:850px){
-  .video-panel{grid-template-columns:1fr}
-  .video-frame,.video-frame video{min-height:250px}
-  .zoom-controls{left:12px;top:12px}
-  .lightbox-close{right:12px;top:12px}
-}
-</style>
-
 </head>
 <body>
 
@@ -246,9 +186,10 @@
     <nav class="links">
       <a href="#overview">Overview</a>
       <a href="#architecture">Architecture</a>
-      <a href="#demo">3D demo</a>
-      <a href="#schematic">Schematic &amp; PCB</a>
-      <a href="#prototype">Prototype log</a>
+      <a href="#demo">Concept Video</a>
+      <a href="#schematic">Schematic</a>
+      <a href="#pcb">PCB Layout</a>
+      <a href="#prototype">Hardware</a>
       <a href="#feasibility">Feasibility</a>
       <a href="#impact">Impact</a>
     </nav>
@@ -348,135 +289,105 @@
 <section id="demo">
   <div class="wrap">
     <div class="section-head">
-      <h2>3D concept demo</h2>
+      <h2>Concept Video</h2>
       <span class="idx mono">03</span>
     </div>
     <div class="demo-frame bracket" id="demoFrame">
       <span class="bk"></span>
-      <canvas id="podCanvas"></canvas>
-      <div class="upload-frame" id="demoUploadFrame" style="display:none; position:absolute; inset:0; margin:0;">
-        <div class="upload-empty" id="demoEmptyState">
-          <div class="icon">▢</div>
-          Your render will appear here
-        </div>
-      </div>
+      <video src="use_this_ppt_as_video_refernce.mp4" autoplay loop muted playsinline></video>
     </div>
     <div class="demo-caption">
-      <p>Illustrative concept geometry, rotating for reference — swap in your own CAD render or walkthrough clip whenever it's ready.</p>
-      <div class="upload-actions" style="margin-top:0;">
-        <button type="button" class="btn" data-target="demoUpload">View 3D render</button>
-        <input type="file" id="demoUpload" accept="image/*,video/*">
-        <button class="btn ghost" id="demoReset">Show 3D concept</button>
-      </div>
+      <p>Illustrative concept of the pressure-resistant AUV payload module actively sensing and adapting in an underwater environment.</p>
     </div>
   </div>
 </section>
 
 <section id="schematic">
   <div class="wrap">
-    <img src="assets/schematic/schematic.png"
-     alt="SONAR-FLEX Circuit Schematic">
     <div class="section-head">
-      <h2>Schematic &amp; PCB</h2>
+      <h2>Schematic &amp; System Layout</h2>
       <span class="idx mono">04</span>
     </div>
     <div class="two-col">
       <div class="upload-panel bracket" style="position:relative;">
         <span class="bk"></span>
         <div class="panel-title">
-          <h3>Circuit schematic</h3>
-          <span class="mono">SVG / PNG</span>
+          <h3>Circuit Schematic</h3>
+          <span class="mono">KiCad</span>
         </div>
-        <div class="upload-frame" id="schematicFrame">
-          <div class="upload-empty" id="schematicEmpty">
-            <div class="icon">▢</div>
-        <img src="assets/schematic/SCH2.png"
-             alt="SONAR-FLEX SCHEMATIC - 1">  
-        </div>
-        <div class="upload-actions">
-          <button type="button" class="btn" data-target="schematicUpload">View schematic</button>
-          <input type="file" id="schematicUpload" accept="image/*">
-          <button class="btn ghost" data-clear="schematic">Remove</button>
+        <div class="upload-frame">
+          <img src="ChatGPT Image Sep 27, 2026, 01_38_09 PM.png" alt="KiCad Circuit Schematic">
         </div>
       </div>
       <div class="upload-panel bracket" style="position:relative;">
         <span class="bk"></span>
         <div class="panel-title">
-          <h3>PCB / breadboard layout</h3>
-          <span class="mono">optional</span>
+          <h3>System Block Diagram</h3>
+          <span class="mono">Architecture</span>
         </div>
-        <div class="upload-frame" id="pcbFrame">
-          <div class="upload-empty" id="pcbEmpty">
-            <div class="icon">▢</div>
-            Breadboard is fully compliant per the problem statement — add a photo when ready
-          </div>
-        </div>
-        <div class="upload-actions">
-          <button type="button" class="btn" data-target="pcbUpload">Upload layout</button>
-          <input type="file" id="pcbUpload" accept="image/*">
-          <button class="btn ghost" data-clear="pcb">Remove</button>
+        <div class="upload-frame">
+          <img src="SCH2.png" alt="System Block Diagram Architecture">
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<section id="prototype">
-  <img src="assets/prototype/P1.png"
-     alt="SONAR-FLEX PROTOTYPE - 1">
+<section id="pcb">
   <div class="wrap">
     <div class="section-head">
-      <h2>Prototype log</h2>
+      <h2>PCB Fabrication Layout</h2>
       <span class="idx mono">05</span>
     </div>
-    <p style="margin-bottom:8px;">The build in progress — waveform on the scope first, then sensing, then the full closed loop.</p>
+    <p style="margin-bottom:32px;">The analog front-end and mixed-signal interface are built to withstand the rigorous demands of AUV payloads. The board strictly partitions high-speed digital logic from sensitive analog acoustic channels.</p>
+    
+    <div style="max-width: 800px; margin: 0 auto;">
+      <div class="upload-panel bracket" style="position:relative;">
+        <span class="bk"></span>
+        <div class="panel-title">
+          <h3>Top Layer (F.Cu)</h3>
+          <span class="mono">Signal Routing</span>
+        </div>
+        <div class="upload-frame" style="background: transparent; border: none; padding-top: 10px;">
+          <img src="ChatGPT Image Sep 27, 2026, 01_39_55 PM.png" style="border-radius: 4px; box-shadow: 0 4px 12px rgba(0,0,0,0.5);" alt="Top Copper Layout">
+        </div>
+        <ul class="feature-list">
+          <li><strong>Zoned Placement:</strong> Digital core (STM32G4) isolated from the high-power analog output (TPA3116).</li>
+          <li><strong>High-Current Paths:</strong> Thick trace routing from the 7-12V entry through the AMS1117 regulator to the transducer block.</li>
+          <li><strong>Signal Integrity:</strong> Point-to-point SPI routing to the MCP4922 to eliminate crosstalk.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="prototype">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Prototype Hardware</h2>
+      <span class="idx mono">06</span>
+    </div>
+    <p style="margin-bottom:24px;">The physical build validating the closed-loop sensing, generation, and transmission pipeline.</p>
     <div class="two-col">
       <div class="upload-panel bracket" style="position:relative;">
         <span class="bk"></span>
         <div class="panel-title">
-          <h3>Photo 1</h3>
-          <span class="mono">JPG / PNG</span>
+          <h3>Hardware Setup</h3>
+          <span class="mono">Bench Testing</span>
         </div>
-        <div class="upload-frame" id="proto1Frame">
-          <div class="upload-empty"><div class="icon">▢</div>Add a bench/build photo</div>
-        </div>
-        <div class="upload-actions">
-          <button type="button" class="btn" data-target="proto1Upload">Upload photo</button>
-          <input type="file" id="proto1Upload" accept="image/*">
-          <button class="btn ghost" data-clear="proto1">Remove</button>
+        <div class="upload-frame">
+          <img src="Gemini_Generated_Image_mrr55amrr55amrr5.png" alt="Hardware Bench Setup">
         </div>
       </div>
       <div class="upload-panel bracket" style="position:relative;">
         <span class="bk"></span>
         <div class="panel-title">
-          <h3>Photo 2</h3>
-          <span class="mono">JPG / PNG</span>
-          <img src="assets/prototype/p2.png"
-     alt="SONAR-FLEX PROTOTYPE - 2">
+          <h3>Final Prototype &amp; Assembly</h3>
+          <span class="mono">Enclosure</span>
         </div>
-        <div class="upload-frame" id="proto2Frame">
-          <div class="upload-empty"><div class="icon">▢</div>Add a bench/build photo</div>
+        <div class="upload-frame">
+          <img src="P2.png" alt="Prototype Assembly and Exploded View">
         </div>
-        <div class="upload-actions">
-          <button type="button" class="btn" data-target="proto2Upload">Upload photo</button>
-          <input type="file" id="proto2Upload" accept="image/*">
-          <button class="btn ghost" data-clear="proto2">Remove</button>
-        </div>
-      </div>
-    </div>
-    <div class="video-panel bracket" style="position:relative;">
-      <span class="bk"></span>
-      <div class="panel-title">
-        <h3>Prototype walkthrough video</h3>
-        <span class="mono">MP4 / WEBM / MOV</span>
-      </div>
-      <div class="video-drop" id="protoVideoFrame">
-        <div class="upload-empty"><div class="icon">▶</div>Add a short video showing the prototype, waveform generation, oscilloscope output, or hardware setup</div>
-      </div>
-      <div class="upload-actions">
-        <button type="button" class="btn" data-target="protoVideoUpload">Upload video</button>
-        <input type="file" id="protoVideoUpload" accept="video/*">
-        <button type="button" class="btn ghost" data-clear="protoVideo">Remove</button>
       </div>
     </div>
   </div>
@@ -486,7 +397,7 @@
   <div class="wrap">
     <div class="section-head">
       <h2>Feasibility</h2>
-      <span class="idx mono">06</span>
+      <span class="idx mono">07</span>
     </div>
     <div class="gauges">
       <div class="gauge-row">
@@ -499,7 +410,7 @@
         <div class="label">Time</div>
         <div class="gauge-track"><div class="gauge-fill" style="width:55%"></div></div>
         <div class="value">Tight</div>
-        <p class="gauge-note">Reduced-scope prototype keeps the Sep 30 deadline realistic.</p>
+        <p class="gauge-note">Reduced-scope prototype keeps the deadline realistic.</p>
       </div>
       <div class="gauge-row">
         <div class="label">Cost</div>
@@ -521,7 +432,7 @@
   <div class="wrap">
     <div class="section-head">
       <h2>Impact &amp; benefits</h2>
-      <span class="idx mono">07</span>
+      <span class="idx mono">08</span>
     </div>
     <div class="impact-grid">
       <div class="impact-col">
@@ -551,363 +462,11 @@
   </div>
 </section>
 
-<div class="media-viewer" id="mediaViewer" aria-hidden="true">
-  <div class="viewer-card" role="dialog" aria-modal="true" aria-label="Media viewer">
-    <div class="viewer-toolbar"><span id="viewerTitle">SONAR-FLEX media</span><button class="viewer-close" id="viewerClose" type="button" aria-label="Close">×</button></div>
-    <div class="viewer-stage" id="viewerStage"></div>
-    <div class="viewer-hint">Click outside or press Esc to close · Images open at their full available resolution · Videos include playback controls</div>
-  </div>
-</div>
-
 <footer>
   <div class="wrap">
-    <p>Prepared for Smart India Hackathon 2026 — Problem Statement SIH26058, Ministry of Earth Sciences / National Institute of Ocean Technology. Team background in VLSI and embedded systems design.</p>
+    <p>Prepared for Smart India Hackathon 2026 — Problem Statement SIH26058, Ministry of Earth Sciences / National Institute of Ocean Technology. Team TITANIC (180833).</p>
   </div>
 </footer>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script>
-(function () {
-  // ---------- Upload trigger buttons (robust across embedded/iframe contexts) ----------
-  document.querySelectorAll('button[data-target]').forEach(function (btn) {
-    btn.addEventListener('click', function (e) {
-      e.preventDefault();
-      var target = document.getElementById(btn.getAttribute('data-target'));
-      if (target) target.click();
-    });
-  });
-
-  // ---------- 3D concept pod ----------
-  var canvas = document.getElementById('podCanvas');
-  var frame = document.getElementById('demoFrame');
-  var renderer, scene, camera, podGroup;
-
-  function initPod() {
-    renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
-    scene = new THREE.Scene();
-    camera = new THREE.PerspectiveCamera(38, 1, 0.1, 100);
-    camera.position.set(0, 0.4, 5.2);
-
-    var amb = new THREE.AmbientLight(0x224455, 1.1);
-    scene.add(amb);
-    var dir = new THREE.DirectionalLight(0x6fe9dc, 1.4);
-    dir.position.set(3, 4, 5);
-    scene.add(dir);
-    var dir2 = new THREE.DirectionalLight(0x2a5a6e, 0.6);
-    dir2.position.set(-4, -2, -3);
-    scene.add(dir2);
-
-    podGroup = new THREE.Group();
-
-    var bodyMat = new THREE.MeshStandardMaterial({ color: 0x123543, metalness: 0.35, roughness: 0.55 });
-    var body = new THREE.Mesh(new THREE.CylinderGeometry(0.75, 0.75, 3.0, 32), bodyMat);
-    body.rotation.z = Math.PI / 2;
-    podGroup.add(body);
-
-    var noseMat = new THREE.MeshStandardMaterial({ color: 0x1c4a58, metalness: 0.3, roughness: 0.5 });
-    var nose = new THREE.Mesh(new THREE.SphereGeometry(0.75, 32, 32, 0, Math.PI * 2, 0, Math.PI / 2), noseMat);
-    nose.rotation.z = -Math.PI / 2;
-    nose.position.x = 1.5;
-    podGroup.add(nose);
-
-    var tailMat = new THREE.MeshStandardMaterial({ color: 0x1c4a58, metalness: 0.3, roughness: 0.5 });
-    var tail = new THREE.Mesh(new THREE.SphereGeometry(0.75, 32, 32, 0, Math.PI * 2, 0, Math.PI / 2), tailMat);
-    tail.rotation.z = Math.PI / 2;
-    tail.position.x = -1.5;
-    podGroup.add(tail);
-
-    var windowMat = new THREE.MeshStandardMaterial({ color: 0x22c4b4, emissive: 0x0e5c53, metalness: 0.1, roughness: 0.3 });
-    var win = new THREE.Mesh(new THREE.CylinderGeometry(0.55, 0.55, 0.08, 32), windowMat);
-    win.rotation.z = Math.PI / 2;
-    win.position.x = 1.55;
-    podGroup.add(win);
-
-    // edge highlight for a blueprint feel
-    var edges = new THREE.EdgesGeometry(new THREE.CylinderGeometry(0.75, 0.75, 3.0, 16));
-    var edgeLines = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: 0x2fd6c4, transparent: true, opacity: 0.35 }));
-    edgeLines.rotation.z = Math.PI / 2;
-    podGroup.add(edgeLines);
-
-    var finMat = new THREE.MeshStandardMaterial({ color: 0x0e2b36, metalness: 0.2, roughness: 0.7 });
-    for (var i = 0; i < 3; i++) {
-      var fin = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.55, 0.05), finMat);
-      fin.position.set(-1.55, 0, 0);
-      fin.rotation.x = (i * Math.PI * 2) / 3;
-      fin.translateY(0.55);
-      podGroup.add(fin);
-    }
-
-    podGroup.rotation.y = 0.4;
-    scene.add(podGroup);
-    resizePod();
-    animatePod();
-    window.addEventListener('resize', resizePod);
-  }
-
-  function resizePod() {
-    if (!renderer || !frame) return;
-    var w = frame.clientWidth, h = frame.clientHeight;
-    renderer.setSize(w, h, false);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-    camera.aspect = w / h;
-    camera.updateProjectionMatrix();
-  }
-
-  function animatePod() {
-    requestAnimationFrame(animatePod);
-    if (podGroup) podGroup.rotation.y += 0.006;
-    if (renderer) renderer.render(scene, camera);
-  }
-
-  if (window.THREE) initPod();
-
-  // ---------- Media viewer ----------
-  var viewer = document.getElementById('mediaViewer');
-  var viewerStage = document.getElementById('viewerStage');
-  var viewerTitle = document.getElementById('viewerTitle');
-  var viewerClose = document.getElementById('viewerClose');
-
-  function openViewer(type, src, title) {
-    viewerTitle.textContent = title || 'SONAR-FLEX media';
-    viewerStage.innerHTML = type === 'video'
-      ? '<video src="' + src + '" controls autoplay playsinline></video>'
-      : '<img src="' + src + '" alt="' + (title || 'Project media') + '">';
-    viewer.classList.add('open');
-    viewer.setAttribute('aria-hidden','false');
-    document.body.style.overflow='hidden';
-  }
-  function closeViewer(){
-    viewer.classList.remove('open');
-    viewer.setAttribute('aria-hidden','true');
-    viewerStage.innerHTML='';
-    document.body.style.overflow='';
-  }
-  viewerClose.addEventListener('click', closeViewer);
-  viewer.addEventListener('click', function(e){ if(e.target===viewer) closeViewer(); });
-  document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeViewer(); });
-
-  function makeOpenable(frameEl, title) {
-    frameEl.addEventListener('click', function(e){
-      var media = frameEl.querySelector('img,video');
-      if (!media || e.target.tagName === 'BUTTON') return;
-      openViewer(media.tagName.toLowerCase()==='video'?'video':'image', media.currentSrc || media.src, title);
-    });
-  }
-
-  // ---------- Generic upload helper ----------
-  function wireUpload(inputId, frameId, storageKey, emptyHTML, title) {
-    var input = document.getElementById(inputId), frameEl = document.getElementById(frameId);
-    if (!input || !frameEl) return;
-    makeOpenable(frameEl, title);
-    function render(dataUrl, type){
-      if(!dataUrl){ frameEl.innerHTML=emptyHTML; return; }
-      frameEl.innerHTML = type === 'video'
-        ? '<video src="'+dataUrl+'" controls muted playsinline></video>'
-        : '<img src="'+dataUrl+'" alt="'+title+'">';
-      frameEl.classList.add('media-openable');
-    }
-    try { var saved=localStorage.getItem(storageKey); if(saved) render(saved,'image'); } catch(e){}
-    input.addEventListener('change',function(e){
-      var file=e.target.files && e.target.files[0]; if(!file) return;
-      var isVideo=file.type.indexOf('video/')===0;
-      var reader=new FileReader();
-      reader.onload=function(){
-        render(reader.result,isVideo?'video':'image');
-        // Small images can persist between visits. Videos are previewed in this session
-        // because browser localStorage is not suitable for large media files.
-        if(!isVideo && file.size < 4*1024*1024){ try{localStorage.setItem(storageKey,reader.result)}catch(err){} }
-      };
-      reader.readAsDataURL(file);
-    });
-    frameEl.addEventListener('clear',function(){try{localStorage.removeItem(storageKey)}catch(e){} render(null);});
-  }
-
-  var schematicEmptyHTML = document.getElementById('schematicFrame').innerHTML;
-  var pcbEmptyHTML = document.getElementById('pcbFrame').innerHTML;
-  wireUpload('schematicUpload', 'schematicFrame', 'sonarSite_schematic', schematicEmptyHTML, 'Circuit schematic');
-  wireUpload('pcbUpload', 'pcbFrame', 'sonarSite_pcb', pcbEmptyHTML, 'PCB / breadboard layout');
-
-  var proto1EmptyHTML = document.getElementById('proto1Frame').innerHTML;
-  var proto2EmptyHTML = document.getElementById('proto2Frame').innerHTML;
-  wireUpload('proto1Upload', 'proto1Frame', 'sonarSite_proto1', proto1EmptyHTML, 'Prototype photo 1');
-  wireUpload('proto2Upload', 'proto2Frame', 'sonarSite_proto2', proto2EmptyHTML, 'Prototype photo 2');
-
-  var protoVideoInput=document.getElementById('protoVideoUpload');
-  var protoVideoFrame=document.getElementById('protoVideoFrame');
-  protoVideoFrame.addEventListener('click',function(){var v=protoVideoFrame.querySelector('video'); if(v) openViewer('video',v.currentSrc||v.src,'Prototype walkthrough video');});
-  protoVideoInput.addEventListener('change',function(e){var f=e.target.files&&e.target.files[0]; if(!f) return; var u=URL.createObjectURL(f); protoVideoFrame.innerHTML='<video src=+u+ controls muted playsinline></video>';});
-
-  document.getElementById('protoVideoUpload').closest('.video-panel').querySelector('[data-clear="protoVideo"]').addEventListener('click',function(){document.getElementById('protoVideoFrame').innerHTML='<div class="upload-empty"><div class="icon">▶</div>Add a short video showing the prototype, waveform generation, oscilloscope output, or hardware setup</div>'; document.getElementById('protoVideoUpload').value='';});
-
-  document.querySelectorAll('[data-clear]').forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      var key = btn.getAttribute('data-clear');
-      var frameId = key + 'Frame';
-      document.getElementById(frameId).dispatchEvent(new Event('clear'));
-    });
-  });
-
-  // ---------- 3D demo upload swap ----------
-  var demoUploadInput = document.getElementById('demoUpload');
-  var demoUploadFrame = document.getElementById('demoUploadFrame');
-  var demoReset = document.getElementById('demoReset');
-  var DEMO_KEY = 'sonarSite_demoRender';
-
-  function showUploadedDemo(dataUrl) {
-    canvas.style.display = 'none';
-    demoUploadFrame.style.display = 'flex';
-    var isVideo = dataUrl.indexOf('data:video') === 0;
-    demoUploadFrame.innerHTML = isVideo
-      ? '<video src="' + dataUrl + '" controls muted playsinline style="width:100%;height:100%;object-fit:cover;"></video>'
-      : '<img src="' + dataUrl + '" alt="Uploaded 3D render" style="width:100%;height:100%;object-fit:cover;">';
-    demoUploadFrame.classList.add('media-openable');
-    demoUploadFrame.onclick=function(){var m=demoUploadFrame.querySelector('img,video'); if(m) openViewer(m.tagName.toLowerCase()==='video'?'video':'image',m.currentSrc||m.src,'3D concept render');};
-  }
-
-  function showPod() {
-    canvas.style.display = 'block';
-    demoUploadFrame.style.display = 'none';
-  }
-
-  try {
-    var savedDemo = localStorage.getItem(DEMO_KEY);
-    if (savedDemo) showUploadedDemo(savedDemo);
-  } catch (e) {}
-
-  demoUploadInput.addEventListener('change', function (e) {
-    var file = e.target.files && e.target.files[0];
-    if (!file) return;
-    var reader = new FileReader();
-    reader.onload = function () {
-      showUploadedDemo(reader.result);
-      try { localStorage.setItem(DEMO_KEY, reader.result); } catch (err) {}
-    };
-    reader.readAsDataURL(file);
-  });
-
-  demoReset.addEventListener('click', function () {
-    try { localStorage.removeItem(DEMO_KEY); } catch (e) {}
-    showPod();
-  });
-})();
-</script>
-
-<div class="media-lightbox" id="mediaLightbox" aria-hidden="true">
-  <button class="lightbox-close" id="lightboxClose" aria-label="Close">×</button>
-  <div class="zoom-controls">
-    <button id="zoomOut" aria-label="Zoom out">−</button>
-    <span id="zoomValue">100%</span>
-    <button id="zoomIn" aria-label="Zoom in">+</button>
-    <button id="zoomReset" aria-label="Reset zoom">Reset</button>
-  </div>
-  <div class="lightbox-stage" id="lightboxStage">
-    <img id="lightboxImage" alt="">
-  </div>
-</div>
-
-<script>
-(() => {
-  const lightbox = document.getElementById('mediaLightbox');
-  const image = document.getElementById('lightboxImage');
-  const stage = document.getElementById('lightboxStage');
-  const zoomValue = document.getElementById('zoomValue');
-  const zoomIn = document.getElementById('zoomIn');
-  const zoomOut = document.getElementById('zoomOut');
-  const zoomReset = document.getElementById('zoomReset');
-  const close = document.getElementById('lightboxClose');
-
-  let scale = 1;
-  let dragging = false, startX = 0, startY = 0, originX = 0, originY = 0;
-
-  function renderZoom() {
-    image.style.transform = `translate(${originX}px, ${originY}px) scale(${scale})`;
-    zoomValue.textContent = `${Math.round(scale * 100)}%`;
-  }
-
-  function openImage(src, alt) {
-    image.src = src;
-    image.alt = alt || 'Project image';
-    scale = 1;
-    originX = 0;
-    originY = 0;
-    renderZoom();
-    lightbox.classList.add('open');
-    lightbox.setAttribute('aria-hidden', 'false');
-    document.body.classList.add('no-scroll');
-  }
-
-  function closeImage() {
-    lightbox.classList.remove('open');
-    lightbox.setAttribute('aria-hidden', 'true');
-    document.body.classList.remove('no-scroll');
-  }
-
-  function changeZoom(amount) {
-    scale = Math.min(4, Math.max(.5, scale + amount));
-    renderZoom();
-  }
-
-  document.querySelectorAll('img').forEach(img => {
-    if (img.closest('#mediaLightbox')) return;
-    img.classList.add('zoomable-image');
-    img.addEventListener('click', () => openImage(img.currentSrc || img.src, img.alt));
-  });
-
-  zoomIn.addEventListener('click', () => changeZoom(.25));
-  zoomOut.addEventListener('click', () => changeZoom(-.25));
-  zoomReset.addEventListener('click', () => {
-    scale = 1; originX = 0; originY = 0; renderZoom();
-  });
-  close.addEventListener('click', closeImage);
-  lightbox.addEventListener('click', e => {
-    if (e.target === lightbox || e.target === stage) closeImage();
-  });
-
-  stage.addEventListener('wheel', e => {
-    e.preventDefault();
-    changeZoom(e.deltaY < 0 ? .2 : -.2);
-  }, {passive:false});
-
-  image.addEventListener('mousedown', e => {
-    if (scale <= 1) return;
-    dragging = true;
-    startX = e.clientX - originX;
-    startY = e.clientY - originY;
-    image.classList.add('dragging');
-  });
-
-  window.addEventListener('mousemove', e => {
-    if (!dragging) return;
-    originX = e.clientX - startX;
-    originY = e.clientY - startY;
-    renderZoom();
-  });
-
-  window.addEventListener('mouseup', () => {
-    dragging = false;
-    image.classList.remove('dragging');
-  });
-
-  document.addEventListener('keydown', e => {
-    if (!lightbox.classList.contains('open')) return;
-    if (e.key === 'Escape') closeImage();
-    if (e.key === '+' || e.key === '=') changeZoom(.25);
-    if (e.key === '-') changeZoom(-.25);
-    if (e.key === '0') { scale = 1; originX = 0; originY = 0; renderZoom(); }
-  });
-})();
-</script>
-
-
-<script>
-(() => {
-  const v = document.getElementById('projectVideo');
-  const empty = document.getElementById('videoEmpty');
-  if (!v || !empty) return;
-  v.addEventListener('loadeddata', () => empty.style.display = 'none');
-  v.addEventListener('error', () => empty.style.display = 'grid');
-})();
-</script>
 
 </body>
 </html>
